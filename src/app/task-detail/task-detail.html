@@ -1,0 +1,216 @@
+<div *ngIf="task" class="task-detail-container">
+  <div class="task-card">
+
+    <div class="task-header">
+      <svg class="task-icon" [class.completed-icon]="task.status === 'completed'" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,16.5L6.5,12L7.91,10.59L11,13.67L16.59,8.09L18,9.5L11,16.5Z"/>
+      </svg>
+      <h2>{{ task.title }}</h2>
+    </div>
+
+    <div class="description-block">
+      <h3>Описание</h3>
+      <p class="task-description">{{ task.description || 'Описание отсутствует' }}</p>
+    </div>
+
+    <div class="task-meta">
+      <div class="meta-item status-item">
+        <span class="meta-label">Текущий статус:</span>
+        <span class="meta-value" [class.completed]="task.status === 'completed'">
+          {{ task.status === 'completed' ? '✓ Выполнена' : '⌛ В работе' }}
+        </span>
+      </div>
+    </div>
+
+    <div class="action-buttons">
+      <button (click)="toggleStatus(task)" class="btn status-btn">
+        {{ task.status === 'completed' ? 'Вернуть в работу' : 'Отметить выполненной' }}
+      </button>
+      <button (click)="goBack()" class="btn back-btn">
+        <svg viewBox="0 0 24 24">
+          <path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+        </svg>
+        Назад к списку
+      </button>
+    </div>
+  </div>
+</div>
+
+<style>
+  :host {
+    --primary-color: #6366f1;
+    --success-color: #10b981;
+    --warning-color: #f59e0b;
+    --text-color: #374151;
+    --bg-color: #f9fafb;
+    --card-bg: #ffffff;
+  }
+
+  .task-detail-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    background-color: var(--bg-color);
+  }
+
+  .task-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    transition: transform 0.3s ease;
+  }
+
+  .task-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .task-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .task-icon {
+    width: 32px;
+    height: 32px;
+    color: #d1d5db;
+  }
+
+  .task-icon.completed-icon {
+    color: var(--success-color);
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    color: var(--text-color);
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .description-block {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    font-weight: 500;
+  }
+
+  .task-description {
+    color: #6b7280;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    padding: 1rem;
+    background: #f3f4f6;
+    border-radius: 8px;
+    text-align: left;
+    max-width: 80%;
+    margin: 0 auto;
+  }
+
+  .task-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    align-items: center;
+  }
+
+  .meta-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .meta-item.status-item {
+    margin-bottom: 1.5rem;
+  }
+
+  .meta-label {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    margin-bottom: 0.25rem;
+  }
+
+  .meta-value {
+    font-size: 1rem;
+    color: var(--text-color);
+    font-weight: 500;
+  }
+
+  .meta-value.completed {
+    color: var(--success-color);
+  }
+
+  .action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    min-width: 200px;
+    justify-content: center;
+  }
+
+  .status-btn {
+    background-color: var(--warning-color);
+    color: white;
+  }
+
+  .status-btn:hover {
+    background-color: #e67e22;
+  }
+
+  .back-btn {
+    background-color: var(--primary-color);
+    color: white;
+  }
+
+  .back-btn:hover {
+    background-color: #4f46e5;
+  }
+
+  .back-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .task-card {
+      padding: 1.5rem;
+    }
+    
+    .action-buttons {
+      flex-direction: column;
+    }
+    
+    .btn {
+      width: 100%;
+    }
+  }
+</style>

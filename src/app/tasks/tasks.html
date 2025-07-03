@@ -1,0 +1,252 @@
+<div class="tasks-container">
+  <div class="task-form">
+    <h2>Добавить задачу</h2>
+    <form (ngSubmit)="addTask()">
+      <div class="form-group">
+        <label for="title">Название:</label>
+        <input type="text" 
+               id="title" 
+               [(ngModel)]="newTask.title" 
+               name="title" 
+               placeholder="Введите название" 
+               required
+               class="form-input">
+      </div>
+      
+      <div class="form-group">
+        <label for="description">Описание:</label>
+        <textarea id="description" 
+                  [(ngModel)]="newTask.description" 
+                  name="description" 
+                  placeholder="Введите описание"
+                  class="form-textarea"></textarea>
+      </div>
+      
+      <button type="submit" class="submit-btn">Добавить</button>
+    </form>
+  </div>
+
+  <div class="task-list">
+    <h2>Мои задачи</h2>
+    <div *ngIf="tasks.length === 0" class="empty-list">
+      <p>Нет задач</p>
+    </div>
+    <ul>
+      <li *ngFor="let task of tasks" class="task-item">
+        <div class="task-header">
+          <h3>{{ task.title }}</h3>
+          <button (click)="deleteTask(task.id)" class="delete-btn">×</button>
+        </div>
+        <p class="task-description">{{ task.description || 'Нет описания' }}</p>
+        <div class="task-footer">
+          <label class="task-status">
+            <input type="checkbox"
+                   [checked]="task.status === 'completed'"
+                   (change)="toggleTaskStatus(task)"
+                   class="status-checkbox">
+            <span>{{ task.status === 'completed' ? '✔ Выполнена' : '⌛ В работе' }}</span>
+          </label>
+          <a [routerLink]="['/tasks', task.id]" class="details-link">Подробнее</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  :host {
+    --primary-color: #3f51b5;
+    --primary-dark: #303f9f;
+    --accent-color: #4caf50;
+    --warn-color: #f44336;
+    --text-color: #333;
+    --text-secondary: #666;
+    --border-color: #ddd;
+    --bg-color: #f9f9f9;
+    --card-bg: white;
+    --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .tasks-container {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+    height: calc(100vh - 2rem);
+    box-sizing: border-box;
+  }
+
+  .task-form {
+    width: 350px;
+    min-width: 350px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    height: fit-content;
+    position: sticky;
+    top: 1rem;
+  }
+
+  .task-list {
+    flex: 1;
+    min-width: 0;
+    overflow-y: auto;
+    max-height: calc(100vh - 2rem);
+    padding-right: 0.5rem;
+  }
+
+  h2 {
+    margin-top: 0;
+    color: var(--primary-color);
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .form-input, .form-textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+  }
+
+  .form-input:focus, .form-textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+  }
+
+  .form-textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+    width: 100%;
+  }
+
+  .submit-btn:hover {
+    background-color: var(--primary-dark);
+  }
+
+  .task-item {
+    background: var(--bg-color);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--primary-color);
+  }
+
+  .task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .task-header h3 {
+    margin: 0;
+    color: var(--text-color);
+  }
+
+  .delete-btn {
+    background: none;
+    border: none;
+    color: var(--warn-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 0.5rem;
+    transition: transform 0.2s;
+  }
+
+  .delete-btn:hover {
+    transform: scale(1.1);
+  }
+
+  .task-description {
+    color: var(--text-secondary);
+    margin: 0.5rem 0;
+    white-space: pre-wrap;
+    line-height: 1.5;
+  }
+
+  .task-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .task-status {
+    color: var(--accent-color);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .status-checkbox {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+  }
+
+  .details-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .details-link:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+
+  .empty-list {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .tasks-container {
+      flex-direction: column;
+      height: auto;
+    }
+    
+    .task-form {
+      width: 100%;
+      min-width: auto;
+      position: static;
+      margin-bottom: 1rem;
+    }
+
+    .task-list {
+      max-height: none;
+      overflow-y: visible;
+    }
+  }
+</style>

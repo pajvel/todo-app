@@ -1,0 +1,85 @@
+
+<div class="app-container">
+  <header class="app-header">
+    <h1>{{ title }}</h1>
+    <nav class="app-nav">
+      <a routerLink="/tasks" routerLinkActive="active">Задачи</a>
+    </nav>
+  </header>
+
+  
+  <main class="app-main">
+    <router-outlet></router-outlet>
+  </main>
+
+  
+  <footer class="app-footer">
+    <p>pajvel © 2025</p>
+  </footer>
+</div>
+
+
+<style>
+  :host {
+    --primary: #3f51b5;
+    --primary-dark: #303f9f;
+    --white: #fff;
+    --gray-bg: #f5f5f5;
+    --text: #333;
+  }
+
+  .app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .app-header {
+    background: var(--primary);
+    color: var(--white);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  .app-nav {
+    margin-top: 1rem;
+  }
+
+  .app-nav a {
+    color: var(--white);
+    text-decoration: none;
+    margin-right: 1rem;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+
+  .app-nav a:hover {
+    background: rgba(255,255,255,0.2);
+  }
+
+  .app-nav a.active {
+    background: rgba(255,255,255,0.3);
+    font-weight: bold;
+  }
+
+  .app-main {
+    flex: 1;
+    padding: 2rem;
+    background: var(--gray-bg);
+  }
+
+  .app-footer {
+    background: var(--primary);
+    color: var(--white);
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+</style>
