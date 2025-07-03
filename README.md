@@ -55,7 +55,6 @@ todo-app/
 │   │   ├── tasks/          
 │   │   ├── task-detail/    
 │   │   ├── app.component.ts
-│   │   ├── app.module.ts
 │   │   ├── app.routes.ts
 │   ├── assets/
 │   ├── environments/
